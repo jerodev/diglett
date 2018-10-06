@@ -4,6 +4,10 @@ php:
   - 7.1
   - 7.2
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 before_script:
   - travis_retry composer self-update
   - travis_retry composer update --no-interaction --prefer-dist
