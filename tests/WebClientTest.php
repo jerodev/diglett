@@ -10,6 +10,7 @@ class WebClientTest extends TestCase {
         $diglett = WebClient::get('https://www.deviaene.eu/');
 
         $this->assertInstanceOf(Diglett::class, $diglett);
+        $this->assertEquals('https://www.deviaene.eu/', $diglett->getUri());
 
     }
 
@@ -19,6 +20,20 @@ class WebClientTest extends TestCase {
         $diglett = $webClient->get('https://www.deviaene.eu/');
 
         $this->assertInstanceOf(Diglett::class, $diglett);
+        $this->assertEquals('https://www.deviaene.eu/', $diglett->getUri());
+
+    }
+
+    public function testConsecutiveRequests() {
+
+        $webClient = new WebClient();
+        $diglett = $webClient->get('https://www.deviaene.eu/');
+        $this->assertInstanceOf(Diglett::class, $diglett);
+        $this->assertEquals('https://www.deviaene.eu/', $diglett->getUri());
+
+        $diglett = $webClient->get('https://www.tabletopfinder.eu/en');
+        $this->assertInstanceOf(Diglett::class, $diglett);
+        $this->assertEquals('https://www.tabletopfinder.eu/en', $diglett->getUri());
 
     }
 

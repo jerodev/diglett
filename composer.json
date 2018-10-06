@@ -1,6 +1,6 @@
 {
     "name": "jerodev/diglett",
-    "description": "The unbreakable php web scraper",
+    "description": "An unbreakable php web scraper",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -14,10 +14,11 @@
             "Jerodev\\Diglett\\": "src/"
         }
     },
+    "require": {
+        "php": "^7.1.18",
+        "phpunit/phpunit": "^7.4"
+    },
     "require-dev": {
         "fabpot/goutte": "^3.2"
-    },
-    "require": {
-        "phpunit/phpunit": "^7.4"
     }
 }
