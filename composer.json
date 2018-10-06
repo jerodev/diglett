@@ -1,0 +1,23 @@
+{
+    "name": "jerodev/diglett",
+    "description": "The unbreakable php web scraper",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jeroen Deviaene",
+            "email": "jeroen.deviaene@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Jerodev\\Diglett\\": "src/"
+        }
+    },
+    "require-dev": {
+        "fabpot/goutte": "^3.2"
+    },
+    "require": {
+        "phpunit/phpunit": "^7.4"
+    }
+}
