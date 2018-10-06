@@ -36,7 +36,26 @@ class Diglett {
      *  Functions we did not catch can be called directly on the crawler
      */
     public function __call($name, $arguments) {
-        return $this->crawler->{$name}(...$arguments);
+
+        switch ($name)
+        {
+            case 'getUri':
+                return $this->crawler->{$name}(...$arguments);
+                break;
+
+            case 'attr':
+            case 'evaluate':
+            case 'nodeName':
+            case 'text':
+                return $this->hasNodeAvailable() ? $this->crawler->{$name}(...$arguments) : null;
+                break;
+
+            default:
+                $this->crawler = $this->crawler->{$name}(...$arguments);
+                break;
+        }
+
+        return $this;
     }
 
     /**
@@ -45,7 +64,7 @@ class Diglett {
      *  @return Diglett
      */
     public function first(): self {
-        if ($this->crawler !== null && $this->crawler->count() > 0)
+        if ($this->hasNodeAvailable())
         {
             $this->crawler = $this->crawler->first();
         }
@@ -57,13 +76,17 @@ class Diglett {
         return $this;
     }
 
+    public function html(): ?string {
+        return $this->hasNodeAvailable() ? trim($this->crawler->html()) : null;
+    }
+
     /**
      *  Fetch the last element in a node list if available
      * 
      *  @return Diglett
      */
     public function last(): self {
-        if ($this->crawler !== null && $this->crawler->count() > 0)
+        if ($this->hasNodeAvailable())
         {
             $this->crawler = $this->crawler->last();
         }
@@ -73,6 +96,15 @@ class Diglett {
         }
 
         return $this;
+    }
+
+    /**
+     *  Check if the current crawler has any nodes
+     * 
+     *  @return bool
+     */
+    private function hasNodeAvailable(): bool {
+        return $this->crawler !== null && $this->crawler->count() > 0;
     }
 
 }

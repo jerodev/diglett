@@ -16,9 +16,10 @@
     },
     "require": {
         "php": "^7.1.18",
-        "phpunit/phpunit": "^7.4"
+        "symfony/dom-crawler": "^4.1"
     },
     "require-dev": {
-        "fabpot/goutte": "^3.2"
+        "fabpot/goutte": "^3.2",
+        "phpunit/phpunit": "^7.4"
     }
 }
