@@ -1,4 +1,5 @@
-# Diglett web scraper [![Build Status](https://travis-ci.org/jerodev/diglett.svg?branch=master)](https://travis-ci.org/jerodev/diglett)
+# Diglett web scraper 
+[![Build Status](https://travis-ci.org/jerodev/diglett.svg?branch=master)](https://travis-ci.org/jerodev/diglett) [![StyleCI](https://github.styleci.io/repos/151305583/shield?branch=master)](https://github.styleci.io/repos/151305583)
 Diglett is an unbreakable webcrawler written in php using the [Symfony DomCrawler Component](https://symfony.com/doc/current/components/dom_crawler.html). This library makes it so that the available functions on the crawler can never throw an error and adds some extra functionalities.
 
 > :exclamation: This package is under development and does currently not work
