@@ -73,7 +73,7 @@ class Diglett
     }
 
     /**
-     *  Return the html content of a node as a string 
+     *  Return the html content of a node as a string.
      *
      *  @return string|null
      */
