@@ -14,97 +14,73 @@ class Diglett
     private $crawler;
 
     /**
-     *  A copy of the root crawler we started with.
-     *
-     *  @var Crawler
+     *  An array of special ICssFilter's
+     * 
+     *  @var array
      */
-    private $rootCrawler;
+    private $cssFilters;
 
     /**
      *  Create a diglett instance from a Symfony Crawler.
      *
-     *  @var Crawler
+     *  @param Crawler
+     *  @param array|null $cssFilters
      */
-    public function __construct(Crawler $crawler)
+    public function __construct(Crawler $crawler, ?array $cssFilters = null)
     {
         $this->crawler = $crawler;
-        $this->rootCrawler = $crawler;
+
+        // If no css filters are set, add the default list
+        if ($cssFilters === null)
+        {
+            $cssFilters = [
+                CssFilters\NthFilter::class
+            ];
+        }
+        $this->cssFilters = [];
+        foreach ($cssFilters as $filter)
+        {
+            $this->cssFilters[$filter::getFunctionName()] = $filter;
+        }
     }
 
     /**
-     *  Functions we did not catch can be called directly on the crawler.
+     *  Get the underlying crawler object
+     * 
+     *  @return Crawler
      */
-    public function __call($name, $arguments)
+    public function getCrawler(): Crawler
     {
-        switch ($name) {
-            case 'getUri':
-                return $this->crawler->{$name}(...$arguments);
-                break;
+        return $this->crawler;
+    }
 
-            case 'attr':
-            case 'evaluate':
-            case 'nodeName':
-            case 'text':
-                return $this->hasNodeAvailable() ? $this->crawler->{$name}(...$arguments) : null;
-                break;
 
-            default:
-                $this->crawler = $this->crawler->{$name}(...$arguments);
-                break;
+    /**
+     *  Use special css selectors to fetch several values
+     * 
+     *  @param array $selectors
+     *  @return array
+     */
+    public function getTexts(array $selectors): array
+    {
+        $results = [];
+        foreach ($selectors as $key => $value)
+        {
+            $results[$key] = $this->getText($value);
         }
 
-        return $this;
+        return $results;
     }
 
     /**
-     *  Fetch the first element in a node list if available.
-     *
-     *  @return Diglett
+     *  Get the value for a single special css selector
+     * 
+     *  @param string $selector
+     *  @return string
      */
-    public function first(): self
+    public function getText(string $selector): string 
     {
-        if ($this->hasNodeAvailable()) {
-            $this->crawler = $this->crawler->first();
-        } else {
-            $this->crawler = null;
-        }
-
-        return $this;
-    }
-
-    /**
-     *  Return the html content of a node as a string.
-     *
-     *  @return string|null
-     */
-    public function html(): ?string
-    {
-        return $this->hasNodeAvailable() ? trim($this->crawler->html()) : null;
-    }
-
-    /**
-     *  Fetch the last element in a node list if available.
-     *
-     *  @return Diglett
-     */
-    public function last(): self
-    {
-        if ($this->hasNodeAvailable()) {
-            $this->crawler = $this->crawler->last();
-        } else {
-            $this->crawler = null;
-        }
-
-        return $this;
-    }
-
-    /**
-     *  Check if the current crawler has any nodes.
-     *
-     *  @return bool
-     */
-    private function hasNodeAvailable(): bool
-    {
-        return $this->crawler !== null && $this->crawler->count() > 0;
+        $parsedSelector = CssFilterParser::parse($selector);
+        die('TODO: use the parsed selector');
     }
 }
