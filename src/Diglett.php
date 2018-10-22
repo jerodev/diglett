@@ -34,6 +34,7 @@ class Diglett
         if ($cssFilters === null)
         {
             $cssFilters = [
+                CssFilters\FirstFilter::class,
                 CssFilters\NthFilter::class
             ];
         }
@@ -76,11 +77,41 @@ class Diglett
      *  Get the value for a single special css selector
      * 
      *  @param string $selector
-     *  @return string
+     *  @return string|null
      */
-    public function getText(string $selector): string 
+    public function getText(string $selector): ?string 
     {
-        $parsedSelector = CssFilterParser::parse($selector);
-        die('TODO: use the parsed selector');
+        $attribute = null;
+        $selector = preg_replace_callback('/\{(.*?)\}$/', function ($matches) use (&$attribute) {
+            if (count($matches) > 1)
+            {
+                $attribute = $matches[1];
+            }
+
+            return null;
+        }, $selector);
+
+        $parsedSelector = CssFilterParser::parse($selector, $this->cssFilters);
+        
+        $crawler = $this->crawler;
+        foreach ($parsedSelector as $part)
+        {
+            $crawler = $crawler->filter($part['selector']);
+            if ($crawler->count() === 0)
+            {
+                return null;
+            }
+
+            foreach ($part['functions'] as $function)
+            {
+                $crawler = $function->filterNodes($crawler);
+                if ($crawler->count() === 0)
+                {
+                    return null;
+                }
+            }
+        }
+
+        return $attribute === null ? $crawler->text() : $crawler->attr($attribute);
     }
 }

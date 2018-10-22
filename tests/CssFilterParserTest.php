@@ -1,6 +1,7 @@
 <?php
 
 use Jerodev\Diglett\CssFilterParser;
+use Jerodev\Diglett\CssFilters\FirstFilter;
 use Jerodev\Diglett\CssFilters\NthFilter;
 use PHPUnit\Framework\TestCase;
 
@@ -22,6 +23,7 @@ class CssFilterParserTest extends TestCase
     public function testParsingCssSelectors($selector, $expectedResult)
     {
         $result = CssFilterParser::parse($selector, [
+            'first' => FirstFilter::class,
             'nth' => NthFilter::class
         ]);
         
@@ -44,7 +46,8 @@ class CssFilterParserTest extends TestCase
             ['p', [['selector' => 'p', 'functions' => []]]],
             ['a[href]', [['selector' => 'a[href]', 'functions' => []]]],
             ['p.content a', [['selector' => 'p.content a', 'functions' => []]]],
-            ['p.content a:nth(2)', [['selector' => 'p.content a', 'functions' => [new NthFilter([2])]]]]
+            ['p.content a:nth(2)', [['selector' => 'p.content a', 'functions' => [new NthFilter([2])]]]],
+            ['p.content a:first() i', [['selector' => 'p.content a', 'functions' => [new FirstFilter([2])]], ['selector' => 'i', 'functions' => []]]]
         ];
     }
 }

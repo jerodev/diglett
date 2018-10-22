@@ -30,7 +30,7 @@ class NthFilter implements ICssFilter
             return null;
 
         // Get the nth element
-        return $crawler->eq($count);
+        return $crawler->eq($count - 1);
 
     }
 }
