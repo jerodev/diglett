@@ -41,6 +41,9 @@ class Diglett
         $this->cssFilters = [];
         foreach ($cssFilters as $filter)
         {
+            if (!class_exists($filter) || !in_array(CssFilters\ICssFilter::class, class_implements($filter)))
+                throw new \ErrorException("All CssFilters should implement ICssFilter, '$filter' does not.");
+
             $this->cssFilters[$filter::getFunctionName()] = $filter;
         }
     }

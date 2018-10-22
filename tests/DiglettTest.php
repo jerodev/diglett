@@ -1,56 +1,31 @@
 <?php
 
+use Jerodev\Diglett\CssFilters\FirstFilter;
+use Jerodev\Diglett\CssFilters\NthFilter;
 use Jerodev\Diglett\Diglett;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
+/**
+ *  Test basic Diglett implementation
+ */
 class DiglettTest extends TestCase
 {
-    private $diglett;
-
-    protected function setUp()
+    
+    public function testCssFilterDoesNotImplementInterface() 
     {
-        $dom = trim('
-            <div class="content">
-                <p>This is the intro</p>
-                <ul data-nth="1">
-                    <li>One</li>
-                    <li>Two</li>
-                    <li>Three</li>
-                </ul>
-                <ul class="second-ul" data-nth="2">
-                    <li>Four</li>
-                    <li>Five</li>
-                </ul>
-            </div>
-        ');
-        $this->diglett = new Diglett(new Crawler($dom));
+        $this->expectException(ErrorException::class);
+        new Diglett(new Crawler, [ \Jerodev\Diglett\WebClient::class ]);
     }
 
-    /**
-     *  @dataProvider diglettTestCaseProvider
-     */
-    public function testGetText(string $selector, string $expectedResult) {
-
-        $this->assertEquals($expectedResult, $this->diglett->getText($selector));
-
-    }
-
-    public function testGetAllTexts() {
-        $cases = [];
-        $results = [];
-        array_map(function ($value) use (&$cases, &$results) { $cases[] = $value[0]; $results[] = $value[1]; }, $this->diglettTestCaseProvider());
-
-        $this->assertEquals($results, $this->diglett->getTexts($cases));
-    }
-
-    public static function diglettTestCaseProvider(): array
+    public function testCssFilterDoesImplementInterface()
     {
-        return [
-            ['p', 'This is the intro'],
-            ['.content li:nth(4)', 'Four'],
-            ['ul:first(){data-nth}', '1']
-        ];
+        $diglett = new Diglett(new Crawler, [
+            FirstFilter::class, 
+            NthFilter::class 
+        ]);
+
+        $this->assertInstanceOf(Diglett::class, $diglett);
     }
 
 }
