@@ -17,18 +17,23 @@ class WebClient
     /**
      *  Create a new Diglett instance.
      *
-     *  @param GuzzelClient|array|null $client
+     *  @param GuzzleClient|array|null $client
      */
     public function __construct($client = null)
     {
         $goutteClient = new Client();
 
-        if (is_a($client, GuzzleClient::class)) {
-            $goutteClient->setClient($client);
-        } elseif (is_array($client)) {
+        if (is_array($client))
+        {
             $guzzleClient = new GuzzleClient($client);
             $goutteClient->setClient($guzzleClient);
-        } else {
+        }
+        elseif (is_a($client, GuzzleClient::class))
+        {
+            $goutteClient->setClient($client);
+        }
+        else
+        {
             // Unknow parmeter type or null, use default configuration
             $this->getClient();
         }
@@ -50,9 +55,9 @@ class WebClient
      *  @param string $url
      *  @param array $body
      */
-    public static function post(string $url, array $body = []): Diglett
+    public static function post(string $url): Diglett
     {
-        return self::request('POST', $url, $body);
+        return self::request('POST', $url);
     }
 
     /**
@@ -62,7 +67,7 @@ class WebClient
      *  @param string $url
      *  @param array $body
      */
-    private static function request(string $method, string $url, array $body = []): Diglett
+    private static function request(string $method, string $url): Diglett
     {
         return new Diglett(self::getClient()->request($method, $url));
     }

@@ -6,12 +6,12 @@ class CssFilterParser {
 
     /**
      *  Parse a string to an array containing selectors and special functions
-     * 
-     *  @param string The filter to parser
-     *  @param array A list of special css filters
+     *
+     *  @param string $line The filter to parser
+     *  @param array $cssFilters A list of special css filters
      *  @return array
      */
-    public static function parse($line, array $cssFilters = []): array {
+    public static function parse(string $line, array $cssFilters = []): array {
 
         // Get basic parsed string
         $parsed = self::parseString($line);
@@ -43,7 +43,7 @@ class CssFilterParser {
 
     /**
      *  Parse a css string to an array of selectors and special functions
-     * 
+     *
      *  @param string $line
      *  @return array
      */

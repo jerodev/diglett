@@ -4,16 +4,16 @@ namespace Jerodev\Diglett\CssFilters;
 
 use Symfony\Component\DomCrawler\Crawler;
 
-class FirstFilter implements ICssFilter 
+class FirstFilter implements ICssFilter
 {
-    function __construct(array $parameters) { }
+    public function __construct(array $parameters) { }
 
-    static function getFunctionName(): string 
+    public static function getFunctionName(): string
     {
         return 'first';
     }
 
-    function filterNodes(Crawler $crawler): ?Crawler {
+    public function filterNodes(Crawler $crawler): ?Crawler {
 
         if ($crawler->count() === 0)
         {

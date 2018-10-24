@@ -4,21 +4,21 @@ namespace Jerodev\Diglett\CssFilters;
 
 use Symfony\Component\DomCrawler\Crawler;
 
-class NthFilter implements ICssFilter 
+class NthFilter implements ICssFilter
 {
     private $parameters;
 
-    static function getFunctionName(): string 
-    {
-        return 'nth';
-    }
-
-    function __construct(array $parameters)
+    public function __construct(array $parameters)
     {
         $this->parameters = $parameters;
     }
 
-    function filterNodes(Crawler $crawler): ?Crawler {
+    public static function getFunctionName(): string
+    {
+        return 'nth';
+    }
+
+    public function filterNodes(Crawler $crawler): ?Crawler {
 
         // Nth needs one parameter
         if (count($this->parameters) === 0)
