@@ -14,38 +14,22 @@ class Diglett
     private $crawler;
 
     /**
-     *  An array of special ICssFilter's
-     *
-     *  @var array
+     *  The css selector parser
+     * 
+     *  @var CssFilterParser
      */
-    private $cssFilters;
+    private $cssFilterParser;
 
     /**
      *  Create a diglett instance from a Symfony Crawler.
      *
      *  @param Crawler
-     *  @param array|null $cssFilters
+     *  @param array $cssFilter An array of extra ICssFilterl classes to filter on
      */
-    public function __construct(Crawler $crawler, ?array $cssFilters = null)
+    public function __construct(Crawler $crawler, array $cssFilters = [])
     {
         $this->crawler = $crawler;
-
-        // If no css filters are set, add the default list
-        if ($cssFilters === null)
-        {
-            $cssFilters = [
-                CssFilters\FirstFilter::class,
-                CssFilters\NthFilter::class
-            ];
-        }
-        $this->cssFilters = [];
-        foreach ($cssFilters as $filter)
-        {
-            if (!class_exists($filter) || !in_array(CssFilters\ICssFilter::class, class_implements($filter)))
-                throw new \ErrorException("All CssFilters should implement ICssFilter, '$filter' does not.");
-
-            $this->cssFilters[$filter::getFunctionName()] = $filter;
-        }
+        $this->cssFilterParser = new CssFilterParser($cssFilters);
     }
 
     /**
@@ -93,7 +77,7 @@ class Diglett
             $selector
         );
 
-        $parsedSelector = CssFilterParser::parse($selector, $this->cssFilters);
+        $parsedSelector = $this->cssFilterParser->parse($selector);
 
         $crawler = $this->crawler;
         foreach ($parsedSelector as $part)

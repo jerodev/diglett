@@ -7,6 +7,16 @@ use PHPUnit\Framework\TestCase;
 
 class CssFilterParserTest extends TestCase
 {
+    private $cssFilterParser;
+
+    protected function setUp()
+    {
+        $this->cssFilterParser = new CssFilterParser([
+            FirstFilter::class,
+            NthFilter::class
+        ]);
+    }
+
     /**
      *  Having an unknown css filter function should throw an ErrorException
      */
@@ -14,7 +24,7 @@ class CssFilterParserTest extends TestCase
     {
         $this->expectException(ErrorException::class);
 
-        CssFilterParser::parse('a[href]:first()');
+        $this->cssFilterParser->parse('a[href]:qsdf()');
     }
 
     /**
@@ -22,10 +32,7 @@ class CssFilterParserTest extends TestCase
      */
     public function testParsingCssSelectors($selector, $expectedResult)
     {
-        $result = CssFilterParser::parse($selector, [
-            'first' => FirstFilter::class,
-            'nth' => NthFilter::class
-        ]);
+        $result = $this->cssFilterParser->parse($selector);
         
         for ($i = 0; $i < count($result); $i++)
         {

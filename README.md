@@ -1,4 +1,4 @@
-> :hammer: This package is currently under development and might not work
+> :hammer: This package is currently under development so function signatures can still change and the package might not even work
 
 # Diglett Web Scraper
 [![Build Status](https://travis-ci.org/jerodev/diglett.svg?branch=master)](https://travis-ci.org/jerodev/diglett) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jerodev/diglett/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jerodev/diglett/?branch=master)
