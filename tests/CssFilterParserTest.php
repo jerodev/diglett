@@ -17,14 +17,27 @@ class CssFilterParserTest extends TestCase
         ]);
     }
 
-    /**
-     *  Having an unknown css filter function should throw an ErrorException
-     */
     public function testThrowErrorOnUknownCssFilterClass()
     {
         $this->expectException(ErrorException::class);
 
         $this->cssFilterParser->parse('a[href]:qsdf()');
+    }
+
+    public function testThrowErrorOnFilterThatDoesNotImplementInterface() 
+    {
+        $this->expectException(ErrorException::class);
+        new CssFilterParser([ \Jerodev\Diglett\WebClient::class ]);
+    }
+
+    public function testNoErrorOnCorrectlyImplementedFilters()
+    {
+        $cssFilterParser = new CssFilterParser([
+            FirstFilter::class, 
+            NthFilter::class 
+        ]);
+
+        $this->assertInstanceOf(CssFilterParser::class, $cssFilterParser);
     }
 
     /**
