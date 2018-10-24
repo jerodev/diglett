@@ -42,6 +42,35 @@ class Diglett
         return $this->crawler;
     }
 
+    /**
+     *  Use special css selectors to filter on the current node collection
+     * 
+     *  @param string $selector
+     *  @return Crawler|null
+     */
+    public function filter(string $selector): ?Crawler 
+    {
+        $parsedSelector = $this->cssFilterParser->parse($selector);
+
+        $crawler = $this->getCrawler();
+        foreach ($parsedSelector as $part)
+        {
+            $crawler = $crawler->filter($part['selector']);
+
+            foreach ($part['functions'] as $function)
+            {
+                $crawler = $function->filterNodes($crawler);
+            }
+
+            if (empty($crawler) || $crawler->count() === 0)
+            {
+                break;
+            }
+        }
+
+        return $crawler;
+    }
+
 
     /**
      *  Use special css selectors to fetch several values
@@ -77,22 +106,10 @@ class Diglett
             $selector
         );
 
-        $parsedSelector = $this->cssFilterParser->parse($selector);
-
-        $crawler = $this->crawler;
-        foreach ($parsedSelector as $part)
+        $crawler = $this->filter($selector);
+        if ($crawler === null)
         {
-            $crawler = $crawler->filter($part['selector']);
-
-            foreach ($part['functions'] as $function)
-            {
-                $crawler = $function->filterNodes($crawler);
-            }
-
-            if (empty($crawler) || $crawler->count() === 0)
-            {
-                return null;
-            }
+            return null;
         }
 
         return $attribute === null ? $crawler->text() : $crawler->attr($attribute);
