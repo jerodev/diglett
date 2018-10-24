@@ -53,7 +53,11 @@ class DiglettTextTest extends TestCase
             ['p', 'This is the intro'],
             ['.content li:nth(4)', 'Four'],
             ['.content li:nth(7)', null],
-            ['ul:first(){data-nth}', '1']
+            ['ul:first(){data-nth}', '1'],
+            ['ul li:containstext(wo)', 'Two'],
+            ['ul li:containstext(two)', null],
+            ['ul li:regextext([Ff][uo]+r)', 'Four'],
+            ['ul li:regextext(f[ou]+r)', null],
         ];
     }
 

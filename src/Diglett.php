@@ -107,7 +107,7 @@ class Diglett
         );
 
         $crawler = $this->filter($selector);
-        if ($crawler === null)
+        if ($crawler === null || $crawler->count() === 0)
         {
             return null;
         }

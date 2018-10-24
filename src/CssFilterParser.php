@@ -23,7 +23,9 @@ class CssFilterParser {
         $this->cssFilters = [];
         $this->addCssFilters([
             CssFilters\FirstFilter::class,
-            CssFilters\NthFilter::class
+            CssFilters\NthFilter::class,
+            CssFilters\ContainsTextFilter::class,
+            CssFilters\RegexTextFilter::class,
         ]);
 
         if (!empty($cssFilters))
