@@ -15,7 +15,7 @@ class Diglett
 
     /**
      *  An array of special ICssFilter's
-     * 
+     *
      *  @var array
      */
     private $cssFilters;
@@ -50,7 +50,7 @@ class Diglett
 
     /**
      *  Get the underlying crawler object
-     * 
+     *
      *  @return Crawler
      */
     public function getCrawler(): Crawler
@@ -61,7 +61,7 @@ class Diglett
 
     /**
      *  Use special css selectors to fetch several values
-     * 
+     *
      *  @param array $selectors
      *  @return array
      */
@@ -78,40 +78,36 @@ class Diglett
 
     /**
      *  Get the value for a single special css selector
-     * 
+     *
      *  @param string $selector
      *  @return string|null
      */
-    public function getText(string $selector): ?string 
+    public function getText(string $selector): ?string
     {
         $attribute = null;
-        $selector = preg_replace_callback('/\{(.*?)\}$/', function ($matches) use (&$attribute) {
-            if (count($matches) > 1)
-            {
-                $attribute = $matches[1];
-            }
-
-            return null;
-        }, $selector);
+        $selector = preg_replace_callback(
+            '/\{(.*?)\}$/',
+            function ($matches) use (&$attribute) {
+                $attribute = $matches[1] ?? null;
+            },
+            $selector
+        );
 
         $parsedSelector = CssFilterParser::parse($selector, $this->cssFilters);
-        
+
         $crawler = $this->crawler;
         foreach ($parsedSelector as $part)
         {
             $crawler = $crawler->filter($part['selector']);
-            if ($crawler->count() === 0)
-            {
-                return null;
-            }
 
             foreach ($part['functions'] as $function)
             {
                 $crawler = $function->filterNodes($crawler);
-                if ($crawler->count() === 0)
-                {
-                    return null;
-                }
+            }
+
+            if (empty($crawler) || $crawler->count() === 0)
+            {
+                return null;
             }
         }
 

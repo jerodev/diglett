@@ -33,7 +33,7 @@ class DiglettTextTest extends TestCase
     /**
      *  @dataProvider diglettTestCaseProvider
      */
-    public function testGetText(string $selector, string $expectedResult) {
+    public function testGetText(string $selector, ?string $expectedResult) {
 
         $this->assertEquals($expectedResult, $this->diglett->getText($selector));
 
@@ -52,6 +52,7 @@ class DiglettTextTest extends TestCase
         return [
             ['p', 'This is the intro'],
             ['.content li:nth(4)', 'Four'],
+            ['.content li:nth(7)', null],
             ['ul:first(){data-nth}', '1']
         ];
     }
