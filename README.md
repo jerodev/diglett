@@ -1,7 +1,7 @@
 > :hammer: This package is currently under development and might not work
 
-# Diglett Web Scraper 
-[![Build Status](https://travis-ci.org/jerodev/diglett.svg?branch=master)](https://travis-ci.org/jerodev/diglett)
+# Diglett Web Scraper
+[![Build Status](https://travis-ci.org/jerodev/diglett.svg?branch=master)](https://travis-ci.org/jerodev/diglett) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jerodev/diglett/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jerodev/diglett/?branch=master)
 
 Diglett is an extended web crawler based on the [Symfony DomCrawler Component](https://symfony.com/doc/current/components/dom_crawler.html). It allows to use extended and custom css selectors to easily get data from a web page.
 
