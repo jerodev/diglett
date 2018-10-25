@@ -8,14 +8,14 @@ class CssFilterParser {
 
     /**
      *  The css filters to parse
-     * 
+     *
      *  @var array
      */
     private $cssFilters;
 
     /**
      *  Create CssFilterParser and set the chosen css filters
-     * 
+     *
      *  @param array $cssFilters An array of css filters to use
      */
     public function __construct(array $cssFilters = [])
@@ -36,10 +36,10 @@ class CssFilterParser {
 
     /**
      *  Add extra css filters
-     * 
+     *
      *  @param array|string $cssFilter
      */
-    public function addCssFilters($cssFilter): void 
+    public function addCssFilters($cssFilter): void
     {
         if (is_array($cssFilter))
         {
@@ -63,7 +63,7 @@ class CssFilterParser {
      *  @param string $line The filter to parser
      *  @return array
      */
-    public function parse(string $line): array 
+    public function parse(string $line): array
     {
         $line = trim($line);
 
@@ -118,12 +118,12 @@ class CssFilterParser {
 
     /**
      *  Parse a string to a CssFilter object
-     * 
+     *
      *  @param string $line The part of the selector presenting the filter function
      */
-    private function parseFunctionString(string $line): ICssFilter 
+    private function parseFunctionString(string $line): ICssFilter
     {
-        if (!preg_match('/^([^\(]+)\(([^\)]*)\)$/', $line, $matches))
+        if (!preg_match('/^([^\(]+)\((.*?)\)$/', $line, $matches))
         {
             throw new \ErrorException("`$line` is not a valid function string.");
         }

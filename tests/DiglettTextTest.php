@@ -58,6 +58,7 @@ class DiglettTextTest extends TestCase
             ['ul li:containstext(two)', null],
             ['ul li:regextext([Ff][uo]+r)', 'Four'],
             ['ul li:regextext(f[ou]+r)', null],
+            ['ul li:regextext(T(wo|hree)):first()', 'Two']
         ];
     }
 
