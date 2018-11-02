@@ -25,9 +25,13 @@ class DiglettTextTest extends TestCase
                     <li>Four</li>
                     <li>Five</li>
                 </ul>
+                <div class="urls">
+                    <a href="test.html">Local test</a>
+                    <a href="https://www.tabletopfinder.eu/">TableTopFinder</a>
+                </div>
             </div>
         ');
-        $this->diglett = new Diglett(new Crawler($dom));
+        $this->diglett = new Diglett(new Crawler($dom, 'https://www.google.com/'));
     }
 
     /**
@@ -45,6 +49,13 @@ class DiglettTextTest extends TestCase
         array_map(function ($value) use (&$cases, &$results) { $cases[] = $value[0]; $results[] = $value[1]; }, $this->diglettTestCaseProvider());
 
         $this->assertEquals($results, $this->diglett->getTexts($cases));
+    }
+
+    public function testGetUrls() {
+        $this->assertEquals(
+            ['https://www.google.com/test.html', 'https://www.tabletopfinder.eu/'],
+            $this->diglett->getUrls('.urls a')
+        );
     }
 
     public static function diglettTestCaseProvider(): array

@@ -118,4 +118,49 @@ class Diglett
 
         return $attribute === null ? $crawler->text() : $crawler->attr($attribute);
     }
+
+    /**
+     *  Fetch urls from the selected nodes (a[href], img[src])
+     */
+    public function getUrls(string $selector): array
+    {
+        $crawler = $this->filter($selector);
+        if ($crawler === null || $crawler->count() === 0)
+        {
+            return [];
+        }
+
+        $absolute = implode('/', array_slice(preg_split('/\//', $crawler->getUri()), 0, 3)) . '/';
+        $relative = substr(preg_replace('/\?.*?$/', '', $crawler->getUri()), 0, strrpos($crawler->getUri(), '/') + 1);
+
+        return $crawler
+            ->reduce(function ($node) {
+                return in_array(strtolower($node->nodeName()), ['a', 'img']);
+            })
+            ->each(function ($node) use ($absolute, $relative) {
+
+                $url = null;
+                switch (strtolower($node->nodeName()))
+                {
+                    case 'a':
+                        $url = $node->attr('href');
+                        break;
+
+                    case 'img':
+                        $url = $node->attr('src');
+                        break;
+                }
+
+                if (preg_match('/^https?:\/\//', $url) !== 1)
+                {
+                    if ($url[0] === '/')
+                        $url = $absolute . ltrim($url, '/');
+                    else
+                        $url = $relative . ltrim($url, '/');
+                }
+
+                return $url;
+
+            });
+    }
 }
