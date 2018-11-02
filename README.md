@@ -20,7 +20,10 @@ $firstParagraph = $diglett->getText("p:first()");
 ## Build in selector functions
 | Function  | Description | Example |
 | --------- | ----------- | ------- |
-| :containsregex(str) | Get the elements where the text content matches a regular expression | `div p:containsregex([Hh]el+o)` |
-| :containstext(str) | Get the elements where the text content contain this substring | `div p:containstext(hello world)` |
-| :first() | Get the first element in a collection | `ul li:first()` |
-| :nth(x) | Get the nth element in a collection (starting at 1) | `ul li:nth(3)` |
+| **:containsregex(str)** | Get the elements where the text content matches a regular expression | `div p:containsregex([Hh]el+o)` |
+| **:containstext(str)** | Get the elements where the text content contain this substring | `div p:containstext(Hello World)` |
+| **:first()** | Get the first element in a collection | `ul li:first()` |
+| **:last()** | Get the last element in a collection | `ul li:last()` |
+| **:next()** | Get the first sibling to the current element if available | `ul.test:next() li` |
+| **:nth(x)** | Get the nth element in a collection (starting at 1) | `ul li:nth(3)` |
+| **:text(str)** | Get elements that exactly have this innerText | `ul li:text(Hello World)` |

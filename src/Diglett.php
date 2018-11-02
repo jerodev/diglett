@@ -15,7 +15,7 @@ class Diglett
 
     /**
      *  The css selector parser
-     * 
+     *
      *  @var CssFilterParser
      */
     private $cssFilterParser;
@@ -44,11 +44,11 @@ class Diglett
 
     /**
      *  Use special css selectors to filter on the current node collection
-     * 
+     *
      *  @param string $selector
      *  @return Crawler|null
      */
-    public function filter(string $selector): ?Crawler 
+    public function filter(string $selector): ?Crawler
     {
         $parsedSelector = $this->cssFilterParser->parse($selector);
 
@@ -60,6 +60,10 @@ class Diglett
             foreach ($part['functions'] as $function)
             {
                 $crawler = $function->filterNodes($crawler);
+                if ($crawler === null)
+                {
+                    return null;
+                }
             }
 
             if (empty($crawler) || $crawler->count() === 0)

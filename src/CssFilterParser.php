@@ -22,9 +22,12 @@ class CssFilterParser {
     {
         $this->cssFilters = [];
         $this->addCssFilters([
-            CssFilters\FirstFilter::class,
-            CssFilters\NthFilter::class,
             CssFilters\ContainsTextFilter::class,
+            CssFilters\ExactTextFilter::class,
+            CssFilters\FirstFilter::class,
+            CssFilters\LastFilter::class,
+            CssFilters\NextFilter::class,
+            CssFilters\NthFilter::class,
             CssFilters\RegexTextFilter::class,
         ]);
 

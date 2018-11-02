@@ -50,15 +50,22 @@ class DiglettTextTest extends TestCase
     public static function diglettTestCaseProvider(): array
     {
         return [
-            ['p', 'This is the intro'],
             ['.content li:nth(4)', 'Four'],
             ['.content li:nth(7)', null],
+            ['p', 'This is the intro'],
+            ['ul[data-nth=1]:first() li:nth(2)', 'Two'],
             ['ul:first(){data-nth}', '1'],
             ['ul li:containstext(wo)', 'Two'],
             ['ul li:containstext(two)', null],
+            ['ul li:last()', 'Five'],
+            ['ul li:last():next()', null],
+            ['ul li:last():next():next()', null],
             ['ul li:regextext([Ff][uo]+r)', 'Four'],
             ['ul li:regextext(f[ou]+r)', null],
-            ['ul li:regextext(T(wo|hree)):first()', 'Two']
+            ['ul li:regextext(T(wo|hree)):first()', 'Two'],
+            ['ul li:text(Two)', 'Two'],
+            ['ul li:text(Two):next()', 'Three'],
+            ['ul li:text(Tw)', null],
         ];
     }
 
