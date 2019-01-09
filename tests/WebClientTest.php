@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests;
+
 use Jerodev\Diglett\Diglett;
 use Jerodev\Diglett\WebClient;
 use PHPUnit\Framework\TestCase;

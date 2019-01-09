@@ -15,20 +15,17 @@ class NextFilter implements ICssFilter
         return 'next';
     }
 
-    public function filterNodes(Crawler $crawler): ?Crawler {
-
-        if ($crawler === null || $crawler->count() === 0)
-        {
+    public function filterNodes(Crawler $crawler): ?Crawler
+    {
+        if ($crawler->count() === 0) {
             return null;
         }
 
         $nextAll = $crawler->nextAll();
-        if ($nextAll->count() === 0)
-        {
+        if ($nextAll->count() === 0) {
             return null;
         }
 
         return $nextAll->first();
-
     }
 }

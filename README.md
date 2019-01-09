@@ -1,5 +1,5 @@
 # Diglett Web Scraper
-[![Build Status](https://travis-ci.org/jerodev/diglett.svg?branch=master)](https://travis-ci.org/jerodev/diglett) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jerodev/diglett/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jerodev/diglett/?branch=master)
+[![Build Status](https://travis-ci.org/jerodev/diglett.svg?branch=master)](https://travis-ci.org/jerodev/diglett) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jerodev/diglett/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jerodev/diglett/?branch=master) [![StyleCI](https://github.styleci.io/repos/151305583/shield?branch=master)](https://github.styleci.io/repos/151305583)
 
 Diglett is an extended web crawler based on the [Symfony DomCrawler Component](https://symfony.com/doc/current/components/dom_crawler.html). It allows to use extended and custom css selectors to easily get data from a web page.
 
@@ -14,7 +14,7 @@ $diglett = \Jerodev\Diglett\WebClient::get('https://www.tabletopfinder.eu/');
 $firstParagraph = $diglett->getText("p:first()");
 ```
 
-## Build in selector functions
+## Built-in selector functions
 | Function  | Description | Example |
 | --------- | ----------- | ------- |
 | **:containsregex(str)** | Get the elements where the text content matches a regular expression | `div p:containsregex([Hh]el+o)` |

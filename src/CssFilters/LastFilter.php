@@ -13,16 +13,12 @@ class LastFilter implements ICssFilter
         return 'last';
     }
 
-    public function filterNodes(Crawler $crawler): ?Crawler {
-
-        if ($crawler->count() === 0)
-        {
+    public function filterNodes(Crawler $crawler): ?Crawler
+    {
+        if ($crawler->count() === 0) {
             return null;
-        }
-        else
-        {
+        } else {
             return $crawler->last();
         }
-
     }
 }

@@ -12,4 +12,6 @@ before_script:
   - travis_retry composer self-update
   - travis_retry composer update --no-interaction --prefer-dist
 
-script: vendor/bin/phpunit
+script:
+  - vendor/bin/phpunit
+  - vendor/bin/phpstan analyse src tests --level=5

@@ -23,17 +23,12 @@ class WebClient
     {
         $goutteClient = new Client();
 
-        if (is_array($client))
-        {
+        if (is_array($client)) {
             $guzzleClient = new GuzzleClient($client);
             $goutteClient->setClient($guzzleClient);
-        }
-        elseif (is_a($client, GuzzleClient::class))
-        {
+        } elseif ($client instanceof GuzzleClient) {
             $goutteClient->setClient($client);
-        }
-        else
-        {
+        } else {
             // Unknow parmeter type or null, use default configuration
             $this->getClient();
         }
@@ -50,10 +45,9 @@ class WebClient
     }
 
     /**
-     *  Perform a GET request.
+     *  Perform a POST request.
      *
      *  @param string $url
-     *  @param array $body
      */
     public static function post(string $url): Diglett
     {
@@ -65,7 +59,6 @@ class WebClient
      *
      *  @param string $method Http method
      *  @param string $url
-     *  @param array $body
      */
     private static function request(string $method, string $url): Diglett
     {

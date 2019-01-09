@@ -8,11 +8,10 @@ class ContainsTextFilter implements ICssFilter
 {
     private $text;
 
-    public function __construct(array $parameters) 
+    public function __construct(array $parameters)
     {
         $this->text = null;
-        if (count($parameters) > 0)
-        {
+        if (count($parameters) > 0) {
             $this->text = $parameters[0];
         }
     }
@@ -22,23 +21,19 @@ class ContainsTextFilter implements ICssFilter
         return 'containstext';
     }
 
-    public function filterNodes(Crawler $crawler): ?Crawler {
-
-        if ($crawler->count() === 0)
-        {
+    public function filterNodes(Crawler $crawler): ?Crawler
+    {
+        if ($crawler->count() === 0) {
             return null;
         }
-        elseif (empty($this->text))
-        {
+
+        if (empty($this->text)) {
             return $crawler;
         }
-        else
-        {
-            $text = $this->text;
-            return $crawler->reduce(function ($node) use ($text) {
-                return strpos($node->text(), $text) !== false;
-            });
-        }
 
+        $text = $this->text;
+        return $crawler->reduce(function ($node) use ($text) {
+            return strpos($node->text(), $text) !== false;
+        });
     }
 }

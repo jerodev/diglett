@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests;
+
 use Jerodev\Diglett\Diglett;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;

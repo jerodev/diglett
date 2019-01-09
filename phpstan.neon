@@ -1,0 +1,3 @@
+parameters:
+    ignoreErrors:
+        - '#Constructor of class Jerodev\\Diglett\\CssFilters\\.*?Filter has an unused parameter \$parameters\.#'

@@ -31,8 +31,7 @@ class CssFilterParser {
             CssFilters\RegexTextFilter::class,
         ]);
 
-        if (!empty($cssFilters))
-        {
+        if (!empty($cssFilters)) {
             $this->addCssFilters($cssFilters);
         }
     }
@@ -44,17 +43,14 @@ class CssFilterParser {
      */
     public function addCssFilters($cssFilter): void
     {
-        if (is_array($cssFilter))
-        {
-            foreach ($cssFilter as $filter)
-            {
+        if (is_array($cssFilter)) {
+            foreach ($cssFilter as $filter) {
                 $this->addCssFilters($filter);
             }
-        }
-        else
-        {
-            if (!class_exists($cssFilter) || !in_array(ICssFilter::class, class_implements($cssFilter)))
+        } else {
+            if (!class_exists($cssFilter) || !in_array(ICssFilter::class, class_implements($cssFilter))) {
                 throw new \ErrorException("`$cssFilter` does not implement ICssFilter.");
+            }
 
             $this->cssFilters[$cssFilter::getFunctionName()] = $cssFilter;
         }
@@ -73,18 +69,15 @@ class CssFilterParser {
         $parts = [];
         $selector = null;
         $functions = [];
-        for ($i = 0; $i < strlen($line); $i++)
-        {
+        for ($i = 0; $i < strlen($line); $i++) {
             $char = $line[$i];
-            if (empty(trim($char)) && empty(trim($selector)))
+            if (empty(trim($char)) && empty(trim($selector))) {
                 continue;
-
-            if ($char !== ':')
-            {
-                $selector .= $char;
             }
-            else
-            {
+
+            if ($char !== ':') {
+                $selector .= $char;
+            } else {
                 do
                 {
                     $brackets = 0;
@@ -113,8 +106,9 @@ class CssFilterParser {
             }
         }
 
-        if (!empty(trim($selector)))
+        if (!empty(trim($selector))) {
             $parts[] = ['selector' => $selector, 'functions' => $functions];
+        }
 
         return $parts;
     }
@@ -126,14 +120,12 @@ class CssFilterParser {
      */
     private function parseFunctionString(string $line): ICssFilter
     {
-        if (!preg_match('/^([^\(]+)\((.*?)\)$/', $line, $matches))
-        {
+        if (!preg_match('/^([^\(]+)\((.*?)\)$/', $line, $matches)) {
             throw new \ErrorException("`$line` is not a valid function string.");
         }
 
         $functionName = $matches[1];
-        if (!array_key_exists($functionName, $this->cssFilters))
-        {
+        if (!array_key_exists($functionName, $this->cssFilters)) {
             throw new \ErrorException("The ICssFilter `$functionName` does not exist.");
         }
 

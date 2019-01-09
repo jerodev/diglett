@@ -11,7 +11,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "Jerodev\\Diglett\\": "src/"
+            "Jerodev\\Diglett\\": "src/",
+            "Tests\\": "tests/"
         }
     },
     "require": {
@@ -20,6 +21,7 @@
         "symfony/dom-crawler": "^4.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.4"
+        "phpunit/phpunit": "^7.4",
+        "phpstan/phpstan": "^0.10.8"
     }
 }

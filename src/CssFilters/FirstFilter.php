@@ -13,16 +13,12 @@ class FirstFilter implements ICssFilter
         return 'first';
     }
 
-    public function filterNodes(Crawler $crawler): ?Crawler {
-
-        if ($crawler->count() === 0)
-        {
+    public function filterNodes(Crawler $crawler): ?Crawler
+    {
+        if ($crawler->count() === 0) {
             return null;
-        }
-        else
-        {
+        } else {
             return $crawler->first();
         }
-
     }
 }

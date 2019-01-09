@@ -8,11 +8,10 @@ class RegexTextFilter implements ICssFilter
 {
     private $regex;
 
-    public function __construct(array $parameters) 
+    public function __construct(array $parameters)
     {
         $this->regex = null;
-        if (count($parameters) > 0)
-        {
+        if (count($parameters) > 0) {
             $this->regex = $parameters[0];
         }
     }
@@ -22,23 +21,17 @@ class RegexTextFilter implements ICssFilter
         return 'regextext';
     }
 
-    public function filterNodes(Crawler $crawler): ?Crawler {
-
-        if ($crawler->count() === 0)
-        {
+    public function filterNodes(Crawler $crawler): ?Crawler
+    {
+        if ($crawler->count() === 0) {
             return null;
-        }
-        elseif (empty($this->regex))
-        {
+        } elseif (empty($this->regex)) {
             return $crawler;
-        }
-        else
-        {
+        } else {
             $regex = $this->regex;
             return $crawler->reduce(function ($node) use ($regex) {
                 return preg_match("/$regex/", $node->text()) === 1;
             });
         }
-
     }
 }

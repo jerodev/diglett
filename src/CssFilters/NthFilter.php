@@ -18,19 +18,20 @@ class NthFilter implements ICssFilter
         return 'nth';
     }
 
-    public function filterNodes(Crawler $crawler): ?Crawler {
-
+    public function filterNodes(Crawler $crawler): ?Crawler
+    {
         // Nth needs one parameter
-        if (count($this->parameters) === 0)
+        if (count($this->parameters) === 0) {
             throw new \ErrorException(':nth(x) css selector should have at least one parameter');
+        }
 
         // If not enough nodes in the list, return null
         $count = intval($this->parameters[0]);
-        if ($crawler->count() < $count)
+        if ($crawler->count() < $count) {
             return null;
+        }
 
         // Get the nth element
         return $crawler->eq($count - 1);
-
     }
 }

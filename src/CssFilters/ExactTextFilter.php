@@ -11,8 +11,7 @@ class ExactTextFilter implements ICssFilter
     public function __construct(array $parameters)
     {
         $this->text = null;
-        if (count($parameters) > 0)
-        {
+        if (count($parameters) > 0) {
             $this->text = $parameters[0];
         }
     }
@@ -22,19 +21,16 @@ class ExactTextFilter implements ICssFilter
         return 'text';
     }
 
-    public function filterNodes(Crawler $crawler): ?Crawler {
-
-        if ($crawler->count() === 0)
-        {
+    public function filterNodes(Crawler $crawler): ?Crawler
+    {
+        if ($crawler->count() === 0) {
             return null;
         }
-        else
-        {
-            $text = $this->text;
-            return $crawler->reduce(function ($node) use ($text) {
-                return $node->text() === $text;
-            });
-        }
+
+        $text = $this->text;
+        return $crawler->reduce(function ($node) use ($text) {
+            return $node->text() === $text;
+        });
 
     }
 }

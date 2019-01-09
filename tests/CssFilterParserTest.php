@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests;
+
+use ErrorException;
 use Jerodev\Diglett\CssFilterParser;
 use Jerodev\Diglett\CssFilters\FirstFilter;
 use Jerodev\Diglett\CssFilters\NthFilter;
@@ -24,7 +27,7 @@ class CssFilterParserTest extends TestCase
         $this->cssFilterParser->parse('a[href]:qsdf()');
     }
 
-    public function testThrowErrorOnFilterThatDoesNotImplementInterface() 
+    public function testThrowErrorOnFilterThatDoesNotImplementInterface()
     {
         $this->expectException(ErrorException::class);
         new CssFilterParser([ \Jerodev\Diglett\WebClient::class ]);
@@ -33,8 +36,8 @@ class CssFilterParserTest extends TestCase
     public function testNoErrorOnCorrectlyImplementedFilters()
     {
         $cssFilterParser = new CssFilterParser([
-            FirstFilter::class, 
-            NthFilter::class 
+            FirstFilter::class,
+            NthFilter::class
         ]);
 
         $this->assertInstanceOf(CssFilterParser::class, $cssFilterParser);
@@ -46,15 +49,13 @@ class CssFilterParserTest extends TestCase
     public function testParsingCssSelectors($selector, $expectedResult)
     {
         $result = $this->cssFilterParser->parse($selector);
-        
-        for ($i = 0; $i < count($result); $i++)
-        {
+
+        for ($i = 0; $i < count($result); $i++) {
             $this->assertEquals($expectedResult[$i]['selector'], $result[$i]['selector']);
             $this->assertEquals(count($expectedResult[$i]['functions']), count($result[$i]['functions']));
 
             // Test function types
-            for ($j = 0; $j < count($expectedResult[$i]['functions']); $j++)
-            {
+            for ($j = 0; $j < count($expectedResult[$i]['functions']); $j++) {
                 $this->assertInstanceOf(get_class($expectedResult[$i]['functions'][$j]), $result[$i]['functions'][$j]);
             }
         }

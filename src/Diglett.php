@@ -2,6 +2,7 @@
 
 namespace Jerodev\Diglett;
 
+use Jerodev\Diglett\CssFilters\ICssFilter;
 use Symfony\Component\DomCrawler\Crawler;
 
 class Diglett
@@ -23,8 +24,8 @@ class Diglett
     /**
      *  Create a diglett instance from a Symfony Crawler.
      *
-     *  @param Crawler|null
-     *  @param array $cssFilter An array of extra ICssFilterl classes to filter on
+     *  @param Crawler|null $crawler
+     *  @param ICssFilter[] $cssFilters An array of extra ICssFilterl classes to filter on
      */
     public function __construct(?Crawler $crawler = null, array $cssFilters = [])
     {
@@ -35,9 +36,9 @@ class Diglett
     /**
      *  Get the underlying crawler object
      *
-     *  @return Crawler
+     *  @return Crawler|null
      */
-    public function getCrawler(): Crawler
+    public function getCrawler(): ?Crawler
     {
         return $this->crawler;
     }
