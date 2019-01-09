@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- *  Test text fetching functions on Diglett
+ *  Test text fetching functions on Diglett.
  */
 class DiglettTextTest extends TestCase
 {
@@ -39,21 +39,25 @@ class DiglettTextTest extends TestCase
     /**
      *  @dataProvider diglettTestCaseProvider
      */
-    public function testGetText(string $selector, ?string $expectedResult) {
-
+    public function testGetText(string $selector, ?string $expectedResult)
+    {
         $this->assertEquals($expectedResult, $this->diglett->getText($selector));
-
     }
 
-    public function testGetAllTexts() {
+    public function testGetAllTexts()
+    {
         $cases = [];
         $results = [];
-        array_map(function ($value) use (&$cases, &$results) { $cases[] = $value[0]; $results[] = $value[1]; }, $this->diglettTestCaseProvider());
+        array_map(function ($value) use (&$cases, &$results) {
+            $cases[] = $value[0];
+            $results[] = $value[1];
+        }, $this->diglettTestCaseProvider());
 
         $this->assertEquals($results, $this->diglett->getTexts($cases));
     }
 
-    public function testGetUrls() {
+    public function testGetUrls()
+    {
         $this->assertEquals(
             ['https://www.google.com/test.html', 'https://www.tabletopfinder.eu/'],
             $this->diglett->getUrls('.urls a')
@@ -81,5 +85,4 @@ class DiglettTextTest extends TestCase
             ['ul li:text(Tw)', null],
         ];
     }
-
 }

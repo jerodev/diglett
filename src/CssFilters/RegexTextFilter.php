@@ -29,6 +29,7 @@ class RegexTextFilter implements ICssFilter
             return $crawler;
         } else {
             $regex = $this->regex;
+
             return $crawler->reduce(function ($node) use ($regex) {
                 return preg_match("/$regex/", $node->text()) === 1;
             });

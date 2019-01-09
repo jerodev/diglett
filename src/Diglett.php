@@ -15,7 +15,7 @@ class Diglett
     private $crawler;
 
     /**
-     *  The css selector parser
+     *  The css selector parser.
      *
      *  @var CssFilterParser
      */
@@ -34,7 +34,7 @@ class Diglett
     }
 
     /**
-     *  Get the underlying crawler object
+     *  Get the underlying crawler object.
      *
      *  @return Crawler|null
      */
@@ -44,12 +44,13 @@ class Diglett
     }
 
     /**
-     *  Use special css selectors to filter on the current node collection
+     *  Use special css selectors to filter on the current node collection.
      *
      *  @param string $selector
+     *
      *  @return Diglett
      */
-    public function filter(string $selector): Diglett
+    public function filter(string $selector): self
     {
         $parsedSelector = $this->cssFilterParser->parse($selector);
 
@@ -72,18 +73,17 @@ class Diglett
         return new self($crawler);
     }
 
-
     /**
-     *  Use special css selectors to fetch several values
+     *  Use special css selectors to fetch several values.
      *
      *  @param string[] $selectors
+     *
      *  @return array
      */
     public function getTexts(array $selectors): array
     {
         $results = [];
-        foreach ($selectors as $key => $value)
-        {
+        foreach ($selectors as $key => $value) {
             $results[$key] = $this->getText($value);
         }
 
@@ -91,9 +91,10 @@ class Diglett
     }
 
     /**
-     *  Get the value for a single special css selector
+     *  Get the value for a single special css selector.
      *
      *  @param string $selector
+     *
      *  @return string|null
      */
     public function getText(string $selector): ?string
@@ -113,11 +114,12 @@ class Diglett
         }
 
         $crawler = $diglett->getCrawler();
+
         return $attribute === null ? $crawler->text() : $crawler->attr($attribute);
     }
 
     /**
-     *  Fetch urls from the selected nodes (a[href], img[src])
+     *  Fetch urls from the selected nodes (a[href], img[src]).
      */
     public function getUrls(string $selector): array
     {
@@ -127,7 +129,7 @@ class Diglett
         }
 
         $crawler = $diglett->getCrawler();
-        $absolute = implode('/', array_slice(preg_split('/\//', $crawler->getUri()), 0, 3)) . '/';
+        $absolute = implode('/', array_slice(preg_split('/\//', $crawler->getUri()), 0, 3)).'/';
         $relative = substr(preg_replace('/\?.*?$/', '', $crawler->getUri()), 0, strrpos($crawler->getUri(), '/') + 1);
 
         return $crawler
@@ -135,10 +137,8 @@ class Diglett
                 return in_array(strtolower($node->nodeName()), ['a', 'img']);
             })
             ->each(function ($node) use ($absolute, $relative) {
-
                 $url = null;
-                switch (strtolower($node->nodeName()))
-                {
+                switch (strtolower($node->nodeName())) {
                     case 'a':
                         $url = $node->attr('href');
                         break;
@@ -148,21 +148,20 @@ class Diglett
                         break;
                 }
 
-                if (preg_match('/^https?:\/\//', $url) !== 1)
-                {
-                    if ($url[0] === '/')
-                        $url = $absolute . ltrim($url, '/');
-                    else
-                        $url = $relative . ltrim($url, '/');
+                if (preg_match('/^https?:\/\//', $url) !== 1) {
+                    if ($url[0] === '/') {
+                        $url = $absolute.ltrim($url, '/');
+                    } else {
+                        $url = $relative.ltrim($url, '/');
+                    }
                 }
 
                 return $url;
-
             });
     }
 
     /**
-     *  Find the node count on the current crawler instance
+     *  Find the node count on the current crawler instance.
      */
     public function nodeCount(): int
     {

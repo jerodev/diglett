@@ -28,9 +28,9 @@ class ExactTextFilter implements ICssFilter
         }
 
         $text = $this->text;
+
         return $crawler->reduce(function ($node) use ($text) {
             return $node->text() === $text;
         });
-
     }
 }
