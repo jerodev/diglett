@@ -32,6 +32,7 @@ class ContainsTextFilter implements ICssFilter
         }
 
         $text = $this->text;
+
         return $crawler->reduce(function ($node) use ($text) {
             return strpos($node->text(), $text) !== false;
         });

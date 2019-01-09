@@ -16,7 +16,7 @@ class CssFilterParserTest extends TestCase
     {
         $this->cssFilterParser = new CssFilterParser([
             FirstFilter::class,
-            NthFilter::class
+            NthFilter::class,
         ]);
     }
 
@@ -30,14 +30,14 @@ class CssFilterParserTest extends TestCase
     public function testThrowErrorOnFilterThatDoesNotImplementInterface()
     {
         $this->expectException(ErrorException::class);
-        new CssFilterParser([ \Jerodev\Diglett\WebClient::class ]);
+        new CssFilterParser([\Jerodev\Diglett\WebClient::class]);
     }
 
     public function testNoErrorOnCorrectlyImplementedFilters()
     {
         $cssFilterParser = new CssFilterParser([
             FirstFilter::class,
-            NthFilter::class
+            NthFilter::class,
         ]);
 
         $this->assertInstanceOf(CssFilterParser::class, $cssFilterParser);
@@ -68,7 +68,7 @@ class CssFilterParserTest extends TestCase
             ['a[href]', [['selector' => 'a[href]', 'functions' => []]]],
             ['p.content a', [['selector' => 'p.content a', 'functions' => []]]],
             ['p.content a:nth(2)', [['selector' => 'p.content a', 'functions' => [new NthFilter([2])]]]],
-            ['p.content a:first() i', [['selector' => 'p.content a', 'functions' => [new FirstFilter([2])]], ['selector' => 'i', 'functions' => []]]]
+            ['p.content a:first() i', [['selector' => 'p.content a', 'functions' => [new FirstFilter([2])]], ['selector' => 'i', 'functions' => []]]],
         ];
     }
 }

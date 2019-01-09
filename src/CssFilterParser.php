@@ -4,17 +4,17 @@ namespace Jerodev\Diglett;
 
 use Jerodev\Diglett\CssFilters\ICssFilter;
 
-class CssFilterParser {
-
+class CssFilterParser
+{
     /**
-     *  The css filters to parse
+     *  The css filters to parse.
      *
      *  @var array
      */
     private $cssFilters;
 
     /**
-     *  Create CssFilterParser and set the chosen css filters
+     *  Create CssFilterParser and set the chosen css filters.
      *
      *  @param array $cssFilters An array of css filters to use
      */
@@ -37,7 +37,7 @@ class CssFilterParser {
     }
 
     /**
-     *  Add extra css filters
+     *  Add extra css filters.
      *
      *  @param array|string $cssFilter
      */
@@ -57,9 +57,10 @@ class CssFilterParser {
     }
 
     /**
-     *  Parse a string to an array containing selectors and special functions
+     *  Parse a string to an array containing selectors and special functions.
      *
      *  @param string $line The filter to parser
+     *
      *  @return array
      */
     public function parse(string $line): array
@@ -78,27 +79,21 @@ class CssFilterParser {
             if ($char !== ':') {
                 $selector .= $char;
             } else {
-                do
-                {
+                do {
                     $brackets = 0;
                     $functionLine = '';
-                    for (;++$i < strlen($line);)
-                    {
+                    for (; ++$i < strlen($line);) {
                         $char = $line[$i];
                         $functionLine .= $char;
-                        if ($char === '(')
-                        {
+                        if ($char === '(') {
                             $brackets++;
-                        }
-                        elseif ($char === ')' && --$brackets === 0)
-                        {
+                        } elseif ($char === ')' && --$brackets === 0) {
                             break;
                         }
                     }
 
                     $functions[] = $this->parseFunctionString($functionLine);
-                }
-                while (++$i < strlen($line) && $line[$i] === ':');
+                } while (++$i < strlen($line) && $line[$i] === ':');
 
                 $parts[] = ['selector' => $selector, 'functions' => $functions];
                 $selector = null;
@@ -114,7 +109,7 @@ class CssFilterParser {
     }
 
     /**
-     *  Parse a string to a CssFilter object
+     *  Parse a string to a CssFilter object.
      *
      *  @param string $line The part of the selector presenting the filter function
      */
@@ -131,5 +126,4 @@ class CssFilterParser {
 
         return new $this->cssFilters[$functionName](preg_split('/,/', $matches[2]));
     }
-
 }

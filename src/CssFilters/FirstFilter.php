@@ -6,7 +6,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class FirstFilter implements ICssFilter
 {
-    public function __construct(array $parameters) { }
+    public function __construct(array $parameters)
+    {
+    }
 
     public static function getFunctionName(): string
     {

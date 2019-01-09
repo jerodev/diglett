@@ -6,8 +6,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 interface ICssFilter
 {
-    function __construct(array $parameters);
-    function filterNodes(Crawler $crawler): ?Crawler;
+    public function __construct(array $parameters);
 
-    static function getFunctionName(): string;
+    public function filterNodes(Crawler $crawler): ?Crawler;
+
+    public static function getFunctionName(): string;
 }
