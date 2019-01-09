@@ -9,7 +9,7 @@ class Diglett
     /**
      *  The Symfony DomCrawler to work with.
      *
-     *  @var Crawler
+     *  @var Crawler|null
      */
     private $crawler;
 
@@ -23,10 +23,10 @@ class Diglett
     /**
      *  Create a diglett instance from a Symfony Crawler.
      *
-     *  @param Crawler
+     *  @param Crawler|null
      *  @param array $cssFilter An array of extra ICssFilterl classes to filter on
      */
-    public function __construct(Crawler $crawler, array $cssFilters = [])
+    public function __construct(?Crawler $crawler = null, array $cssFilters = [])
     {
         $this->crawler = $crawler;
         $this->cssFilterParser = new CssFilterParser($cssFilters);
@@ -46,40 +46,36 @@ class Diglett
      *  Use special css selectors to filter on the current node collection
      *
      *  @param string $selector
-     *  @return Crawler|null
+     *  @return Diglett
      */
-    public function filter(string $selector): ?Crawler
+    public function filter(string $selector): Diglett
     {
         $parsedSelector = $this->cssFilterParser->parse($selector);
 
         $crawler = $this->getCrawler();
-        foreach ($parsedSelector as $part)
-        {
-            $crawler = $crawler->filter($part['selector']);
-
-            foreach ($part['functions'] as $function)
-            {
-                $crawler = $function->filterNodes($crawler);
-                if ($crawler === null)
-                {
-                    return null;
-                }
+        foreach ($parsedSelector as $part) {
+            if (empty($crawler) || $crawler->count() === 0) {
+                break;
             }
 
-            if (empty($crawler) || $crawler->count() === 0)
-            {
-                break;
+            $crawler = $crawler->filter($part['selector']);
+
+            foreach ($part['functions'] as $function) {
+                $crawler = $function->filterNodes($crawler);
+                if ($crawler === null) {
+                    break;
+                }
             }
         }
 
-        return $crawler;
+        return new self($crawler);
     }
 
 
     /**
      *  Use special css selectors to fetch several values
      *
-     *  @param array $selectors
+     *  @param string[] $selectors
      *  @return array
      */
     public function getTexts(array $selectors): array
@@ -110,12 +106,12 @@ class Diglett
             $selector
         );
 
-        $crawler = $this->filter($selector);
-        if ($crawler === null || $crawler->count() === 0)
-        {
+        $diglett = $this->filter($selector);
+        if ($diglett->nodeCount() === 0) {
             return null;
         }
 
+        $crawler = $diglett->getCrawler();
         return $attribute === null ? $crawler->text() : $crawler->attr($attribute);
     }
 
@@ -124,12 +120,12 @@ class Diglett
      */
     public function getUrls(string $selector): array
     {
-        $crawler = $this->filter($selector);
-        if ($crawler === null || $crawler->count() === 0)
-        {
+        $diglett = $this->filter($selector);
+        if ($diglett->nodeCount() === 0) {
             return [];
         }
 
+        $crawler = $diglett->getCrawler();
         $absolute = implode('/', array_slice(preg_split('/\//', $crawler->getUri()), 0, 3)) . '/';
         $relative = substr(preg_replace('/\?.*?$/', '', $crawler->getUri()), 0, strrpos($crawler->getUri(), '/') + 1);
 
@@ -162,5 +158,17 @@ class Diglett
                 return $url;
 
             });
+    }
+
+    /**
+     *  Find the node count on the current crawler instance
+     */
+    public function nodeCount(): int
+    {
+        if ($this->crawler === null) {
+            return 0;
+        }
+
+        return $this->crawler->count();
     }
 }
