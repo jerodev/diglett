@@ -38,11 +38,11 @@ class DiglettTextTest extends TestCase
 
     public function testEach()
     {
-        $array = $this->diglett->each('div.content ul:first() li', function ($node) {
-            return $node->text();
+        $array = $this->diglett->each('div.content ul:first() li', function ($diglett, $i) {
+            return $i . $diglett->getText();
         });
 
-        $this->assertEquals(['One', 'Two', 'Three'], $array);
+        $this->assertEquals(['0One', '1Two', '2Three'], $array);
     }
 
     /**
