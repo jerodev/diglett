@@ -45,10 +45,11 @@ class Diglett
     }
 
     /**
-     *  Perform a closure function on matched nodes for a selector and return as array
+     *  Perform a closure function on matched nodes for a selector and return as array.
      *
      *  @param string $selector
      *  @param Closure $closure A function to perform on the list of nodes
+     * 
      *  @return array An array of dom nodes
      */
     public function each(string $selector, Closure $closure): array
