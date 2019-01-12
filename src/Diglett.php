@@ -117,7 +117,7 @@ class Diglett
     {
         $attribute = null;
         $diglett = $this;
-        
+
         if ($selector !== null) {
             $selector = preg_replace_callback(
                 '/\{(.*?)\}$/',
@@ -135,6 +135,7 @@ class Diglett
         }
 
         $crawler = $diglett->getCrawler();
+
         return $attribute === null ? $crawler->text() : $crawler->attr($attribute);
     }
 
