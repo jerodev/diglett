@@ -2,6 +2,7 @@
 
 namespace Jerodev\Diglett;
 
+use Closure;
 use Jerodev\Diglett\CssFilters\ICssFilter;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -41,6 +42,18 @@ class Diglett
     public function getCrawler(): ?Crawler
     {
         return $this->crawler;
+    }
+
+    /**
+     *  Perform a closure function on matched nodes for a selector and return as array
+     *
+     *  @param string $selector
+     *  @param Closure $closure A function to perform on the list of nodes
+     *  @return array An array of dom nodes
+     */
+    public function each(string $selector, Closure $closure): array
+    {
+        return $this->filter($selector)->getCrawler()->each($closure);
     }
 
     /**
