@@ -36,6 +36,15 @@ class DiglettTextTest extends TestCase
         $this->diglett = new Diglett(new Crawler($dom, 'https://www.google.com/'));
     }
 
+    public function testEach()
+    {
+        $array = $this->diglett->each('div.content ul:first() li', function ($diglett, $i) {
+            return $i.$diglett->getText();
+        });
+
+        $this->assertEquals(['0One', '1Two', '2Three'], $array);
+    }
+
     /**
      *  @dataProvider diglettTestCaseProvider
      */
