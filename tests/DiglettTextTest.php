@@ -73,6 +73,14 @@ class DiglettTextTest extends TestCase
         );
     }
 
+    public function testNestedFilter() {
+        $result = $this->diglett->each('ul', function ($diglett, $i) {
+            return $diglett->getText(str_repeat(':prev()', $i + 1));
+        });
+
+        $this->assertEquals(['This is the intro', 'This is the intro'], $result);
+    }
+
     public static function diglettTestCaseProvider(): array
     {
         return [
