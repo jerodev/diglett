@@ -23,4 +23,5 @@ $firstParagraph = $diglett->getText("p:first()");
 | **:last()** | Get the last element in a collection | `ul li:last()` |
 | **:next()** | Get the first sibling to the current element if available | `ul.test:next() li` |
 | **:nth(x)** | Get the nth element in a collection (starting at 1) | `ul li:nth(3)` |
+| **:prev()** | Get previous sibling to the current element if available | `ul li:last():prev()` |
 | **:text(str)** | Get elements that exactly have this innerText | `ul li:text(Hello World)` |

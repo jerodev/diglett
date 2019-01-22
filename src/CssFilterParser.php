@@ -28,6 +28,7 @@ class CssFilterParser
             CssFilters\LastFilter::class,
             CssFilters\NextFilter::class,
             CssFilters\NthFilter::class,
+            CssFilters\PrevFilter::class,
             CssFilters\RegexTextFilter::class,
         ]);
 

@@ -83,6 +83,8 @@ class DiglettTextTest extends TestCase
             ['ul li:text(Two)', 'Two'],
             ['ul li:text(Two):next()', 'Three'],
             ['ul li:text(Tw)', null],
+            ['ul li:last():prev()', 'Four'],
+            ['ul li:first():prev()', null],
         ];
     }
 }
