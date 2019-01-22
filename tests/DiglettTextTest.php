@@ -73,7 +73,8 @@ class DiglettTextTest extends TestCase
         );
     }
 
-    public function testNestedFilter() {
+    public function testNestedFilter()
+    {
         $result = $this->diglett->each('ul', function ($diglett, $i) {
             return $diglett->getText(str_repeat(':prev()', $i + 1));
         });
