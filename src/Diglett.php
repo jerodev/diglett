@@ -76,11 +76,11 @@ class Diglett
                 break;
             }
 
-            if (!empty($part['selector'])) {
-                $crawler = $crawler->filter($part['selector']);
+            if (!empty($part->getSelector())) {
+                $crawler = $crawler->filter($part->getSelector());
             }
 
-            foreach ($part['functions'] as $function) {
+            foreach ($part->getFunctions() as $function) {
                 $crawler = $function->filterNodes($crawler);
                 if ($crawler === null) {
                     break;

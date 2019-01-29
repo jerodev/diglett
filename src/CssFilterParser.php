@@ -3,6 +3,7 @@
 namespace Jerodev\Diglett;
 
 use Jerodev\Diglett\CssFilters\ICssFilter;
+use Jerodev\Diglett\Models\ParsedSelector;
 
 class CssFilterParser
 {
@@ -96,14 +97,14 @@ class CssFilterParser
                     $functions[] = $this->parseFunctionString($functionLine);
                 } while (++$i < strlen($line) && $line[$i] === ':');
 
-                $parts[] = ['selector' => $selector, 'functions' => $functions];
+                $parts[] = new ParsedSelector($selector, $functions);
                 $selector = null;
                 $functions = [];
             }
         }
 
-        if (!empty(trim($selector))) {
-            $parts[] = ['selector' => $selector, 'functions' => $functions];
+        if (!empty(trim($selector)) || !empty($functions)) {
+            $parts[] = new ParsedSelector($selector, $functions);
         }
 
         return $parts;

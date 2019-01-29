@@ -6,6 +6,7 @@ use ErrorException;
 use Jerodev\Diglett\CssFilterParser;
 use Jerodev\Diglett\CssFilters\FirstFilter;
 use Jerodev\Diglett\CssFilters\NthFilter;
+use Jerodev\Diglett\Models\ParsedSelector;
 use PHPUnit\Framework\TestCase;
 
 class CssFilterParserTest extends TestCase
@@ -51,12 +52,12 @@ class CssFilterParserTest extends TestCase
         $result = $this->cssFilterParser->parse($selector);
 
         for ($i = 0; $i < count($result); $i++) {
-            $this->assertEquals($expectedResult[$i]['selector'], $result[$i]['selector']);
-            $this->assertEquals(count($expectedResult[$i]['functions']), count($result[$i]['functions']));
+            $this->assertEquals($expectedResult[$i]->getSelector(), $result[$i]->getSelector());
+            $this->assertEquals(count($expectedResult[$i]->getFunctions()), count($result[$i]->getFunctions()));
 
             // Test function types
-            for ($j = 0; $j < count($expectedResult[$i]['functions']); $j++) {
-                $this->assertInstanceOf(get_class($expectedResult[$i]['functions'][$j]), $result[$i]['functions'][$j]);
+            for ($j = 0; $j < $expectedResult[$i]->getFunctionCount(); $j++) {
+                $this->assertInstanceOf(get_class($expectedResult[$i]->getFunction($j)), $result[$i]->getFunction($j));
             }
         }
     }
@@ -64,11 +65,11 @@ class CssFilterParserTest extends TestCase
     public static function cssParserTestCaseProvider()
     {
         return [
-            ['p', [['selector' => 'p', 'functions' => []]]],
-            ['a[href]', [['selector' => 'a[href]', 'functions' => []]]],
-            ['p.content a', [['selector' => 'p.content a', 'functions' => []]]],
-            ['p.content a:nth(2)', [['selector' => 'p.content a', 'functions' => [new NthFilter([2])]]]],
-            ['p.content a:first() i', [['selector' => 'p.content a', 'functions' => [new FirstFilter([2])]], ['selector' => 'i', 'functions' => []]]],
+            ['p', [new ParsedSelector('p')]],
+            ['a[href]', [new ParsedSelector('a[href]')]],
+            ['p.content a', [new ParsedSelector('p.content a')]],
+            ['p.content a:nth(2)', [new ParsedSelector('p.content a', [new NthFilter([2])])]],
+            ['p.content a:first() i', [new ParsedSelector('p.content a', [new FirstFilter([2])]), new ParsedSelector('i')]],
         ];
     }
 }
