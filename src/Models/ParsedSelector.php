@@ -39,7 +39,7 @@ class ParsedSelector
     }
 
     /**
-     *  Return the function at a specific index
+     *  Return the function at a specific index.
      *
      *  @param int $index
      *
@@ -51,7 +51,7 @@ class ParsedSelector
     }
 
     /**
-     *  Get the number of functions
+     *  Get the number of functions.
      *
      *  @return int
      */
