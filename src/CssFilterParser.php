@@ -117,15 +117,13 @@ class CssFilterParser
      */
     private function parseFunctionString(string $line): ICssFilter
     {
-        if (!preg_match('/^([^\(]+)\((.*?)\)$/', $line, $matches)) {
-            throw new \ErrorException("`$line` is not a valid function string.");
-        }
+        $functionName = strstr($line, '(', true);
+        $arguments = explode(',', substr(strstr($line, '('), 1, -1));
 
-        $functionName = $matches[1];
         if (!array_key_exists($functionName, $this->cssFilters)) {
             throw new \ErrorException("The ICssFilter `$functionName` does not exist.");
         }
 
-        return new $this->cssFilters[$functionName](preg_split('/,/', $matches[2]));
+        return new $this->cssFilters[$functionName]($arguments);
     }
 }

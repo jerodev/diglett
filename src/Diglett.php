@@ -121,13 +121,10 @@ class Diglett
         $diglett = $this;
 
         if ($selector !== null) {
-            $selector = preg_replace_callback(
-                '/\{(.*?)\}$/',
-                function ($matches) use (&$attribute) {
-                    $attribute = $matches[1] ?? null;
-                },
-                $selector
-            );
+            if (($attr = strstr($selector, '{')) && $attr[-1] === '}') {
+                $selector = substr($selector, 0, strlen($attr) * -1);
+                $attribute = substr($attr, 1, -1);
+            }
 
             $diglett = $this->filter($selector);
         }
@@ -152,8 +149,8 @@ class Diglett
         }
 
         $crawler = $diglett->getCrawler();
-        $absolute = implode('/', array_slice(preg_split('/\//', $crawler->getUri()), 0, 3)).'/';
-        $relative = substr(preg_replace('/\?.*?$/', '', $crawler->getUri()), 0, strrpos($crawler->getUri(), '/') + 1);
+        $absolute = implode('/', array_slice(explode('/', $crawler->getUri()), 0, 3)).'/';
+        $relative = substr(strstr($crawler->getUri(), '?', true) ?: $crawler->getUri(), 0, strrpos($crawler->getUri(), '/') + 1);
 
         return $crawler
             ->reduce(function ($node) {
@@ -171,7 +168,7 @@ class Diglett
                         break;
                 }
 
-                if (preg_match('/^https?:\/\//', $url) !== 1) {
+                if (!in_array(substr($url, 0, 7), ['http://', 'https:/'])) {
                     if ($url[0] === '/') {
                         $url = $absolute.ltrim($url, '/');
                     } else {

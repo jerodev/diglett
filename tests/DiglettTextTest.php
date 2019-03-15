@@ -28,12 +28,13 @@ class DiglettTextTest extends TestCase
                     <li>Five</li>
                 </ul>
                 <div class="urls">
-                    <a href="test.html">Local test</a>
+                    <a href="/test.html">Local test</a>
+                    <a href="relative.html">Relative link</a>
                     <a href="https://www.tabletopfinder.eu/">TableTopFinder</a>
                 </div>
             </div>
         ');
-        $this->diglett = new Diglett(new Crawler($dom, 'https://www.google.com/'));
+        $this->diglett = new Diglett(new Crawler($dom, 'https://www.google.com/q/a?test=1'));
     }
 
     public function testEach()
@@ -68,7 +69,7 @@ class DiglettTextTest extends TestCase
     public function testGetUrls()
     {
         $this->assertEquals(
-            ['https://www.google.com/test.html', 'https://www.tabletopfinder.eu/'],
+            ['https://www.google.com/test.html', 'https://www.google.com/q/relative.html', 'https://www.tabletopfinder.eu/'],
             $this->diglett->getUrls('.urls a')
         );
     }
