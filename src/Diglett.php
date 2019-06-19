@@ -148,7 +148,7 @@ class Diglett
         } else {
             $diglett = new self($this->getCrawler());
         }
-        
+
         if ($diglett->nodeCount() === 0) {
             return [];
         }
