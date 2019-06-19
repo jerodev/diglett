@@ -141,43 +141,55 @@ class Diglett
     /**
      *  Fetch urls from the selected nodes (a[href], img[src]).
      */
-    public function getUrls(string $selector): array
+    public function getUrls(?string $selector = null): array
     {
-        $diglett = $this->filter($selector);
+        if ($selector !== null) {
+            $diglett = $this->filter($selector);
+        } else {
+            $diglett = new self($this->getCrawler());
+        }
+        
         if ($diglett->nodeCount() === 0) {
             return [];
         }
 
-        $crawler = $diglett->getCrawler();
-        $absolute = implode('/', array_slice(explode('/', $crawler->getUri()), 0, 3)).'/';
+        $urls = $diglett->each('a, img', function ($d) {
+            return $d->getUrl();
+        });
+
+        return array_filter($urls);
+    }
+
+    /**
+     *  Fetch the url from the current main node if available.
+     */
+    public function getUrl(): ?string
+    {
+        $crawler = $this->getCrawler();
+        $absolute = implode('/', array_slice(explode('/', $crawler->getUri()), 0, 3)) . '/';
         $relative = substr(strstr($crawler->getUri(), '?', true) ?: $crawler->getUri(), 0, strrpos($crawler->getUri(), '/') + 1);
 
-        return $crawler
-            ->reduce(function ($node) {
-                return in_array(strtolower($node->nodeName()), ['a', 'img']);
-            })
-            ->each(function ($node) use ($absolute, $relative) {
-                $url = null;
-                switch (strtolower($node->nodeName())) {
-                    case 'a':
-                        $url = $node->attr('href');
-                        break;
+        $url = null;
+        $node = $crawler->first();
+        switch (strtolower($node->nodeName())) {
+            case 'a':
+                $url = $node->attr('href');
+                break;
 
-                    case 'img':
-                        $url = $node->attr('src');
-                        break;
-                }
+            case 'img':
+                $url = $node->attr('src');
+                break;
+        }
 
-                if (!in_array(substr($url, 0, 7), ['http://', 'https:/'])) {
-                    if ($url[0] === '/') {
-                        $url = $absolute.ltrim($url, '/');
-                    } else {
-                        $url = $relative.ltrim($url, '/');
-                    }
-                }
+        if (!in_array(substr($url, 0, 7), ['http://', 'https:/'])) {
+            if ($url[0] === '/') {
+                $url = $absolute . ltrim($url, '/');
+            } else {
+                $url = $relative . ltrim($url, '/');
+            }
+        }
 
-                return $url;
-            });
+        return $url;
     }
 
     /**
