@@ -2,6 +2,7 @@
 
 namespace Jerodev\Diglett;
 
+use ErrorException;
 use Jerodev\Diglett\CssFilters\ICssFilter;
 use Jerodev\Diglett\Models\ParsedSelector;
 
@@ -17,7 +18,8 @@ class CssFilterParser
     /**
      *  Create CssFilterParser and set the chosen css filters.
      *
-     *  @param array $cssFilters An array of css filters to use
+     * @param array $cssFilters An array of css filters to use
+     * @throws ErrorException
      */
     public function __construct(array $cssFilters = [])
     {
@@ -41,7 +43,8 @@ class CssFilterParser
     /**
      *  Add extra css filters.
      *
-     *  @param array|string $cssFilter
+     * @param array|string $cssFilter
+     * @throws ErrorException
      */
     public function addCssFilters($cssFilter): void
     {
@@ -51,7 +54,7 @@ class CssFilterParser
             }
         } else {
             if (!class_exists($cssFilter) || !in_array(ICssFilter::class, class_implements($cssFilter))) {
-                throw new \ErrorException("`$cssFilter` does not implement ICssFilter.");
+                throw new ErrorException("`$cssFilter` does not implement ICssFilter.");
             }
 
             $this->cssFilters[$cssFilter::getFunctionName()] = $cssFilter;
@@ -59,11 +62,12 @@ class CssFilterParser
     }
 
     /**
-     *  Parse a string to an array containing selectors and special functions.
+     * Parse a string to an array containing selectors and special functions.
      *
-     *  @param string $line The filter to parser
+     * @param string $line The filter to parser.
      *
-     *  @return array
+     * @return array
+     * @throws ErrorException
      */
     public function parse(string $line): array
     {
@@ -72,13 +76,17 @@ class CssFilterParser
         $parts = [];
         $selector = null;
         $functions = [];
+        $quoted = false;
         for ($i = 0; $i < strlen($line); $i++) {
             $char = $line[$i];
             if (empty(trim($char)) && empty(trim($selector))) {
                 continue;
             }
+            if ($char === '"') {
+                $quoted = !$quoted;
+            }
 
-            if ($char !== ':') {
+            if ($char !== ':' || $quoted) {
                 $selector .= $char;
             } else {
                 do {
@@ -100,6 +108,7 @@ class CssFilterParser
                 $parts[] = new ParsedSelector($selector, $functions);
                 $selector = null;
                 $functions = [];
+
             }
         }
 
@@ -111,9 +120,11 @@ class CssFilterParser
     }
 
     /**
-     *  Parse a string to a CssFilter object.
+     * Parse a string to a CssFilter object.
      *
-     *  @param string $line The part of the selector presenting the filter function
+     * @param string $line The part of the selector presenting the filter function.
+     * @return ICssFilter
+     * @throws ErrorException
      */
     private function parseFunctionString(string $line): ICssFilter
     {
@@ -121,7 +132,7 @@ class CssFilterParser
         $arguments = explode(',', substr(strstr($line, '('), 1, -1));
 
         if (!array_key_exists($functionName, $this->cssFilters)) {
-            throw new \ErrorException("The ICssFilter `$functionName` does not exist.");
+            throw new ErrorException("The ICssFilter `$functionName` does not exist.");
         }
 
         return new $this->cssFilters[$functionName]($arguments);

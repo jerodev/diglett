@@ -11,29 +11,12 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 class DiglettTextTest extends TestCase
 {
+    /** @var Diglett */
     private $diglett;
 
     protected function setUp()
     {
-        $dom = trim('
-            <div class="content">
-                <p>This is the intro</p>
-                <ul data-nth="1">
-                    <li>One</li>
-                    <li>Two</li>
-                    <li>Three</li>
-                </ul>
-                <ul class="second-ul" data-nth="2">
-                    <li>Four</li>
-                    <li>Five</li>
-                </ul>
-                <div class="urls">
-                    <a href="/test.html">Local test</a>
-                    <a href="relative.html">Relative link</a>
-                    <a href="https://www.tabletopfinder.eu/">TableTopFinder</a>
-                </div>
-            </div>
-        ');
+        $dom = trim(file_get_contents(__DIR__ . '/test.html'));
         $this->diglett = new Diglett(new Crawler($dom, 'https://www.google.com/q/a?test=1'));
     }
 
@@ -104,6 +87,7 @@ class DiglettTextTest extends TestCase
             ['ul li:text(Tw)', null],
             ['ul li:last():prev()', 'Four'],
             ['ul li:first():prev()', null],
+            ['a[href="https://www.tabletopfinder.eu/"]', 'TableTopFinder'],
         ];
     }
 }
