@@ -19,6 +19,7 @@ class CssFilterParser
      *  Create CssFilterParser and set the chosen css filters.
      *
      * @param array $cssFilters An array of css filters to use
+     *
      * @throws ErrorException
      */
     public function __construct(array $cssFilters = [])
@@ -44,6 +45,7 @@ class CssFilterParser
      *  Add extra css filters.
      *
      * @param array|string $cssFilter
+     *
      * @throws ErrorException
      */
     public function addCssFilters($cssFilter): void
@@ -66,8 +68,9 @@ class CssFilterParser
      *
      * @param string $line The filter to parser.
      *
-     * @return array
      * @throws ErrorException
+     *
+     * @return array
      */
     public function parse(string $line): array
     {
@@ -108,7 +111,6 @@ class CssFilterParser
                 $parts[] = new ParsedSelector($selector, $functions);
                 $selector = null;
                 $functions = [];
-
             }
         }
 
@@ -123,8 +125,10 @@ class CssFilterParser
      * Parse a string to a CssFilter object.
      *
      * @param string $line The part of the selector presenting the filter function.
-     * @return ICssFilter
+     *
      * @throws ErrorException
+     *
+     * @return ICssFilter
      */
     private function parseFunctionString(string $line): ICssFilter
     {
