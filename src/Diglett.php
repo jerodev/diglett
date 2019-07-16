@@ -54,7 +54,12 @@ class Diglett
      */
     public function each(string $selector, Closure $closure): array
     {
-        return $this->filter($selector)->getCrawler()->each(function ($crawler, $i) use ($closure) {
+        $nodes = $this->filter($selector);
+        if ($nodes->nodeCount() === 0) {
+            return [];
+        }
+        
+        return $nodes->getCrawler()->each(function ($crawler, $i) use ($closure) {
             return $closure(new self($crawler), $i);
         });
     }
