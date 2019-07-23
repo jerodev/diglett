@@ -170,6 +170,10 @@ class Diglett
      */
     public function getUrl(): ?string
     {
+        if ($this->nodeCount() === 0) {
+            return null;
+        }
+        
         $crawler = $this->getCrawler();
         $absolute = implode('/', array_slice(explode('/', $crawler->getUri()), 0, 3)) . '/';
         $relative = substr(strstr($crawler->getUri(), '?', true) ?: $crawler->getUri(), 0, strrpos($crawler->getUri(), '/') + 1);
