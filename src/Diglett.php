@@ -206,10 +206,10 @@ class Diglett
      */
     public function nodeCount(): int
     {
-        if ($this->crawler === null) {
+        if ($this->getCrawler() === null) {
             return 0;
         }
 
-        return $this->crawler->count();
+        return $this->getCrawler()->count();
     }
 }
