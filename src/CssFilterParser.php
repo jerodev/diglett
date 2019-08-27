@@ -85,7 +85,7 @@ class CssFilterParser
             if (empty(trim($char)) && empty(trim($selector))) {
                 continue;
             }
-            if ($char === '"') {
+            if ($char === '"' || $char === '\'') {
                 $quoted = !$quoted;
             }
 
