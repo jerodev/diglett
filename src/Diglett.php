@@ -190,7 +190,7 @@ class Diglett
                 break;
         }
 
-        if (!in_array(substr($url, 0, 7), ['http://', 'https:/'])) {
+        if ($url && !in_array(substr($url, 0, 7), ['http://', 'https:/'])) {
             if ($url[0] === '/') {
                 $url = $absolute . ltrim($url, '/');
             } else {
