@@ -188,6 +188,10 @@ class Diglett
             case 'img':
                 $url = $node->attr('src');
                 break;
+
+            case 'meta':
+                $url = $node->attr('content');
+                break;
         }
 
         if ($url && !in_array(substr($url, 0, 7), ['http://', 'https:/'])) {
